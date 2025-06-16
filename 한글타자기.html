@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>한글 타자기</title>
+  <style>
+    body {
+      font-family: 'Malgun Gothic', 'Nanum Gothic', sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #F5E7D3;
+    }
+    h1, h2 {
+      color: #5C3A21;
+      margin-bottom: 10px;
+    }
+    #display {
+      width: 60%;
+      height: 100px;
+      margin: 10px auto 20px;
+      padding: 10px;
+      border: 2px solid #5C3A21;
+      background-color: #ffffff;
+      border-radius: 20px;
+      text-align: center;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    .keyboard {
+      margin-top: 20px;
+    }
+    .row {
+      margin: 10px 0;
+    }
+    label {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      margin: 5px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+      text-align: center;
+    }
+    .number { background-color: #CBAE82; }
+    .first-row { background-color: #A97155; }
+    .second-row { background-color: #8B5E3C; }
+    .third-row { background-color: #5C3A21; color: white; }
+  </style>
+</head>
+<body>
+  <h1>한글 타자기</h1>
+  <h2>한양여자대학교 빅데이터과 2302607 편지현</h2>
+  <div id="display"></div>
+  <div class="keyboard">
+    <div class="row" id="row-numbers"></div>
+    <div class="row" id="row-1"></div>
+    <div class="row" id="row-2"></div>
+    <div class="row" id="row-3"></div>
+  </div>
+  <script>
+    const display = document.getElementById('display');
+    const korLayout = [
+      ['1','2','3','4','5','6','7','8','9','0'],
+      ['ㅂ','ㅈ','ㄷ','ㄱ','ㅅ','ㅛ','ㅕ','ㅑ','ㅐ','ㅔ'],
+      ['ㅁ','ㄴ','ㅇ','ㄹ','ㅎ','ㅗ','ㅓ','ㅏ','ㅣ',';'],
+      ['ㅋ','ㅌ','ㅊ','ㅍ','ㅠ','ㅜ','ㅡ',',','/']
+    ];
+    function renderKeyboard() {
+      const rows = [
+        document.getElementById('row-numbers'),
+        document.getElementById('row-1'),
+        document.getElementById('row-2'),
+        document.getElementById('row-3')
+      ];
+      rows.forEach(row => row.innerHTML = '');
+      korLayout.forEach((line, rowIdx) => {
+        line.forEach(char => {
+          const key = document.createElement('label');
+          key.textContent = char;
+          key.className = rowIdx === 0 ? 'number' : rowIdx === 1 ? 'first-row' : rowIdx === 2 ? 'second-row' : 'third-row';
+          key.addEventListener('click', () => display.textContent += char);
+          rows[rowIdx].appendChild(key);
+        });
+      });
+    }
+    document.addEventListener('keydown', (event) => {
+      const key = event.key;
+      if (key === 'Backspace') {
+        display.textContent = display.textContent.slice(0, -1);
+      } else if (key === 'Enter') {
+        display.textContent += '\n';
+      }
+    });
+    
+    document.addEventListener('keydown', (event) => {
+      const key = event.key;
+      const validKeys = layout.flat();
+      if (key === 'Backspace') {
+        display.textContent = display.textContent.slice(0, -1);
+      } else if (key === 'Enter') {
+        display.textContent += '\n';
+      } else if (validKeys.includes(key)) {
+        display.textContent += key;
+      }
+    });
+
+        document.addEventListener('keydown', (event) => {
+      const key = event.key.toLowerCase();
+      const map = {'q': 'ㅂ', 'w': 'ㅈ', 'e': 'ㄷ', 'r': 'ㄱ', 't': 'ㅅ', 'y': 'ㅛ', 'u': 'ㅕ', 'i': 'ㅑ', 'o': 'ㅐ', 'p': 'ㅔ', 'a': 'ㅁ', 's': 'ㄴ', 'd': 'ㅇ', 'f': 'ㄹ', 'g': 'ㅎ', 'h': 'ㅗ', 'j': 'ㅓ', 'k': 'ㅏ', 'l': 'ㅣ', 'z': 'ㅋ', 'x': 'ㅌ', 'c': 'ㅊ', 'v': 'ㅍ', 'b': 'ㅠ', 'n': 'ㅜ', 'm': 'ㅡ', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9', '0': '0', ',': ',', '/': '/', ';': ';'};
+      if (key === 'Backspace') {
+        display.textContent = display.textContent.slice(0, -1);
+      } else if (key === 'Enter') {
+        display.textContent += '\n';
+      } else if (map[key]) {
+        display.textContent += map[key];
+      }
+    });
+    renderKeyboard();
+  </script>
+</body>
+</html>

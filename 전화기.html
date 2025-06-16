@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>전화기</title>
+  <style>
+    body {
+      font-family: 'Malgun Gothic', sans-serif;
+      background-color: #F5E7D3;
+      color: #333;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #5C3A21;
+    }
+    #display {
+      width: 60%;
+      height: 100px;
+      margin: 10px auto 20px;
+      padding: 10px;
+      border: 2px solid #5C3A21;
+      background-color: #ffffff;
+      border-radius: 20px;
+      text-align: center;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    #keyboard {
+      display: grid;
+      grid-template-columns: repeat(3, 70px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .key {
+      width: 60px;
+      height: 60px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border: 2px solid #5C3A21;
+      background-color: #F5E7D3;
+      border-radius: 50%;
+       text-align: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .key:hover {
+      background-color: #e3cdb5;
+    }
+  </style>
+</head>
+<body>
+  <h1>전화기</h1>
+  <div id="display"></div>
+  <div id="keyboard"></div>
+  <script>
+    const display = document.getElementById('display');
+    const keyboard = document.getElementById('keyboard');
+    let phone = '';
+    const keys = ['1','2','3','4','5','6','7','8','9','*','0','#'];
+
+    function formatPhone(num) {
+      num = num.replace(/[^\d]/g, '');
+      if (num.length < 4) return num;
+      if (num.length < 8) return num.replace(/(\d{3})(\d+)/, '$1-$2');
+      return num.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3');
+    }
+
+    keys.forEach(k => {
+      const btn = document.createElement('div');
+      btn.className = 'key';
+      btn.textContent = k;
+      btn.onclick = () => {
+        if (phone.length < 13) {
+          phone += k;
+          display.textContent = formatPhone(phone);
+        }
+      };
+      keyboard.appendChild(btn);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      if (/^[0-9*#]$/.test(key) && phone.length < 13) {
+        phone += key;
+        display.textContent = formatPhone(phone);
+      } else if (key === 'Backspace') {
+        phone = phone.slice(0, -1);
+        display.textContent = formatPhone(phone);
+      }
+    });
+  </script>
+</body>
+</html>
